@@ -24,7 +24,7 @@ export default function Signup() {
         }
       );
       console.log(res);
-      localStorage.setItem("token", "Bearer "+res.data.token);
+      localStorage.setItem("token", res.data.token);
       sfn("");
       sln("");
       sem("");

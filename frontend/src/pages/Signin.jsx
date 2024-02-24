@@ -1,36 +1,35 @@
-import React, { useState , useEffect, useContext} from "react";
-import { Link, redirect, useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useContext } from "react";
+import { Link, Navigate, redirect, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { MyContext } from "../ContexApi/util";
 
 export default function Signin() {
-    const [em, sem] = useState("");
-    const [pwd, spwd] = useState("");
-    const navigate = useNavigate();
+  const [em, sem] = useState("");
+  const [pwd, spwd] = useState("");
+  const navigate = useNavigate();
 
-    const {token, setToken} = useContext(MyContext);
+  useEffect(() => {
+    const data = localStorage.getItem("token");
+    if (data) navigate("/dashboard");
+  }, []);
 
-    useEffect(()=>{
-        const data = localStorage.getItem('token');
-        data ? setToken(data) : "";
-    }, [token])
-
-    async function handleSubmit(e){
-        e.preventDefault();
-        const obj = {username: em, password: pwd};
-        try{
-            const res = await axios.post("http://localhost:3000/api/v1/user/signin", obj);
-        
-            console.log(res.data);
-            sem(""); spwd("");
-            localStorage.setItem("token", res.data.token);
-            navigate("/dashboard");
-        }
-        catch(err){
-            console.log(err);
-        }
-       
+  async function handleSubmit(e) {
+    e.preventDefault();
+    const obj = { username: em, password: pwd };
+    try {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/user/signin",
+        obj
+      );
+      
+      console.log(res.data);
+      sem("");
+      spwd("");
+      localStorage.setItem("token", res.data.token);
+      navigate("/dashboard");
+    } catch (err) {
+      console.log(err);
     }
+  }
 
   return (
     <div className="flex justify-center items-center bg-slate-300 h-[92vh]">

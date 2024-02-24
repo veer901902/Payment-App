@@ -6,15 +6,12 @@ import {
   useNavigate,
   useSearchParams,
 } from "react-router-dom";
-import { MyContext } from "../ContexApi/util";
 
 export default function sendMoney() {
   const [searchParam, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const [amt, setAmt] = useState();
-  const {token} = useContext(MyContext);
-
-  // const token = localStorage.getItem("token");
+  const token = localStorage.getItem("token");
 
   if (!token) {
     return <Navigate to="/signin" />;

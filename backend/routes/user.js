@@ -87,26 +87,26 @@ router.put("/", authMiddleware, async (req, res) => {
 
 router.get("/bulk", async (req, res) => {
   const filter = req.query.filter || "";
+
+  // this code searches for users in the database whose first name or last name matches
+  //  a given pattern specified by the filter variable.
   const users = await User.find({
-    $or: [{ firstName: filter }, { lastName: filter }],
+    $or: [
+      {
+        firstName: {
+          $regex: filter,
+        },
+      },
+      {
+        lastName: {
+          $regex: filter,
+        },
+      },
+    ],
   });
-  // const users = await User.find({
-  //   $or: [
-  //     {
-  //       firstName: {
-  //         $regex: filter,
-  //       },
-  //     },
-  //     {
-  //       lastName: {
-  //         $regex: filter,
-  //       },
-  //     },
-  //   ],
-  // });
 
   res.json({
-    user: users.map((user) => ({
+    users: users.map((user) => ({
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
@@ -114,5 +114,6 @@ router.get("/bulk", async (req, res) => {
     })),
   });
 });
+
 
 module.exports = router;
