@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://127.0.0.1:27017");
+require("dotenv").config();
+
+mongoose.connect(process.env.MONGO_URL);
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -35,12 +37,12 @@ const accountSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
-    required: true
+    required: true,
   },
   balance: {
-    type: Number, 
-    required: true
-  }
+    type: Number,
+    required: true,
+  },
 });
 
 const User = mongoose.model("User", userSchema);
